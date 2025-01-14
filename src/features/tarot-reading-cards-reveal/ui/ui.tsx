@@ -33,7 +33,7 @@ function TarotReadingCardReveal() {
         },
       })
       .to(card2.current, {
-        duration: 0.1,
+        duration: 0.5,
         rotateY: 0,
       })
   }, [cardsAppeared])
