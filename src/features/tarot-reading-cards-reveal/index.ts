@@ -1,0 +1,1 @@
+export { TarotReadingCardReveal } from './ui'
