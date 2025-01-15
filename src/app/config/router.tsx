@@ -1,11 +1,12 @@
 import { Route, Routes } from 'react-router'
 
-import { PageTarotReading } from '~/pages/index'
+import { PageHome, PageTarotReading } from '~/pages'
 
 function Router() {
   return (
     <Routes>
-      <Route path='/' element={<PageTarotReading />} />
+      <Route path='/tarot-reading' element={<PageTarotReading />} />
+      <Route path='/' element={<PageHome />} />
     </Routes>
   )
 }

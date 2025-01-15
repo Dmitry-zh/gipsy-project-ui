@@ -68,7 +68,6 @@ module.exports = {
                     'widgets',
                     'features',
                     'entities',
-                    'shared',
                 ].map((layer) => ({
                     pattern: `**/?(*)${layer}{,/**}`,
                     group: 'internal',
