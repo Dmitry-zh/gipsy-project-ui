@@ -1,0 +1,1 @@
+export { TarotCard } from './ui'

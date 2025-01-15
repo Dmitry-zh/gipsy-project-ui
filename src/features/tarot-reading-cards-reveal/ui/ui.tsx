@@ -1,7 +1,8 @@
 import gsap from 'gsap'
-import { forwardRef, useEffect, useRef } from 'react'
+import { useEffect, useRef } from 'react'
 
-import { cn } from '~/shared/lib'
+import { TarotCard } from '~/entities/tarot-card'
+import { cn } from '~/shared/lib/cn'
 
 import { useCardFitToScreen, useCardsAppear } from '../lib'
 
@@ -26,7 +27,7 @@ function TarotReadingCardReveal() {
     const tl = gsap
       .timeline()
       .to(card2.current, {
-        duration: 1,
+        duration: 0.5,
         rotateY: 90,
         onComplete: () => {
           card2.current!.querySelector('img')!.src = '/bobr.png'
@@ -41,25 +42,22 @@ function TarotReadingCardReveal() {
   return (
     <div ref={container} className='flex h-full w-full flex-1 flex-col'>
       <div className='relative flex h-[60vh] max-h-[60vh]'>
-        <Test
+        <TarotCard
           ref={card1}
-          className='card_1 left-4 z-[1]'
+          className='card_1 left-4 z-[1] h-1/2'
           onClick={() => toggleOnMainScreen(0)}
         />
-        <Test
+        <TarotCard
           ref={card2}
-          className='card_2 left-[30%] z-[2]'
+          className='card_2 left-[30%] z-[2] h-1/2'
           onClick={() => toggleOnMainScreen(1)}
         />
-        <Test
+        <TarotCard
           ref={card3}
-          className='card_3 left-[60%] z-[3]'
+          className='card_3 left-[60%] z-[3] h-1/2'
           onClick={() => toggleOnMainScreen(2)}
         />
       </div>
-      {/*<div>*/}
-      {/*  <button className='border-2 px-6 py-3 active:bg-slate-400'>add</button>*/}
-      {/*</div>*/}
 
       <div
         ref={fitContainer}
@@ -70,23 +68,5 @@ function TarotReadingCardReveal() {
     </div>
   )
 }
-
-const Test = forwardRef<HTMLDivElement, { className?: string; onClick: any }>(
-  ({ className, onClick }, ref) => {
-    return (
-      <div
-        ref={ref}
-        className={cn(className, 'absolute h-full w-[36%] border-2 shadow-md')}
-      >
-        <img
-          src='/placeholder.png'
-          className='absolute h-full w-full'
-          onClick={onClick}
-        />
-      </div>
-    )
-  },
-)
-Test.displayName = 'Test'
 
 export { TarotReadingCardReveal }
