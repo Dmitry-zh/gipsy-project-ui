@@ -1,15 +1,17 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router'
 
 import { TarotReadingCardReveal } from '~/features/tarot-reading-cards-reveal'
-import { API } from '~/shared/api'
+import { API, TarotReadingParsed } from '~/shared/api'
+import { Nullable } from '~/shared/model'
 
 function TarotReading() {
   const { state } = useLocation()
   const navigate = useNavigate()
+  const [apiResult, setApiResult] = useState<Nullable<TarotReadingParsed>>(null)
   const getTarotReading = async () => {
-    const res = await API.getTarotReading(state.question)
-    console.log(res)
+    const result = await API.getTarotReading(state.question)
+    setApiResult(result)
   }
 
   useEffect(() => {
@@ -22,7 +24,7 @@ function TarotReading() {
   return (
     <div className='flex flex-1 flex-col'>
       <h1>Tarot Reading</h1>
-      <TarotReadingCardReveal />
+      <TarotReadingCardReveal apiResult={apiResult} />
     </div>
   )
 }

@@ -1,12 +1,18 @@
-import gsap from 'gsap'
-import { useEffect, useRef } from 'react'
+import { useRef } from 'react'
 
 import { TarotCard } from '~/entities/tarot-card'
+import { TarotReadingParsed } from '~/shared/api'
 import { cn } from '~/shared/lib/cn'
+import { Nullable } from '~/shared/model'
+import { Button } from '~/shared/shadcn/ui/button'
 
-import { useCardFitToScreen, useCardsAppear } from '../lib'
+import { useCardFitToScreen, useTableCards } from '../lib'
 
-function TarotReadingCardReveal() {
+function TarotReadingCardReveal({
+  apiResult,
+}: {
+  apiResult: Nullable<TarotReadingParsed>
+}) {
   const [card1, card2, card3] = [
     useRef<HTMLDivElement>(null),
     useRef<HTMLDivElement>(null),
@@ -14,33 +20,25 @@ function TarotReadingCardReveal() {
   ]
   const container = useRef<HTMLDivElement>(null)
   const fitContainer = useRef<HTMLDivElement>(null)
-  const cardsAppeared = useCardsAppear(container, card1, card2, card3)
+
+  const { nextButtonPressed, title, caption } = useTableCards({
+    cards: [card1, card2, card3],
+    detailsContainer: fitContainer,
+    apiResult,
+    container,
+  })
+
   const { toggleOnMainScreen } = useCardFitToScreen(
     fitContainer,
     [card1, card2, card3],
-    cardsAppeared,
+    false,
   )
-
-  useEffect(() => {
-    if (!cardsAppeared) return
-
-    const tl = gsap
-      .timeline()
-      .to(card2.current, {
-        duration: 0.5,
-        rotateY: 90,
-        onComplete: () => {
-          card2.current!.querySelector('img')!.src = '/bobr.png'
-        },
-      })
-      .to(card2.current, {
-        duration: 0.5,
-        rotateY: 0,
-      })
-  }, [cardsAppeared])
 
   return (
     <div ref={container} className='flex h-full w-full flex-1 flex-col'>
+      <div className='absolute z-0 h-full w-full'>
+        <img className='h-full w-full' src='/table.png' />
+      </div>
       <div className='relative flex h-[60vh] max-h-[60vh]'>
         <TarotCard
           ref={card1}
@@ -57,6 +55,12 @@ function TarotReadingCardReveal() {
           className='card_3 left-[60%] z-[3] h-1/2'
           onClick={() => toggleOnMainScreen(2)}
         />
+      </div>
+
+      <div className='z-[1]'>
+        <p>{title}</p>
+        <p>{caption}</p>
+        <Button onClick={nextButtonPressed}>next</Button>
       </div>
 
       <div
